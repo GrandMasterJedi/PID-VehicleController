@@ -1,19 +1,23 @@
+[image1]: ./img/straight.png "im1"
+[image2]: ./img/curve.png "im2"
+
+
 # Demo of PID (Proportional Integral Derivative) Controller for Vehicle Steering
 
-Within a simulated environment a vehicle drives autonomously a virtual circuit. The vehicle tries to stay in the center of the circuit lane as the PIC controller, implemented in c++, controls the steering angle of the vehicle.  
+Within a simulated environment a vehicle drives autonomously a virtual circuit. The vehicle tries to stay in the center of the circuit lane as the PID controller, implemented in c++, controls the steering angle of the vehicle.  
 
 This project is my solution to term 2, assignment 4 of the Udacity Self-Driving Car Engineer Nanodegree Program
 
 
 ## Data Flow
-* The simulator takes data from the PID and provides cross-trach error (CTE), previous trottle and yaw. 
+* The simulator takes data from the PID and provides cross-trach error (CTE), previous throttle and yaw. 
 * The PID submit a new steering angle and adjust throttle value (speed) to the simulator
 
 
-
 ## Output
-
-
+The vehicle run in the simulated circuit. The examples below show the vehicle running in a straight circuit segment, whith a speed exceeding 30mph and the vehicle behavior in a tight curvature.  
+![alt text][image1]
+![alt text][image2]
 
 ---
 
@@ -53,31 +57,17 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 --- 
 
 ## Reflection
-### Describe the effect each of the P, I, D components had in your implementation.
-Student describes the effect of the P, I, D component of the PID algorithm in their implementation. Is it what you expected?
 
-Visual aids are encouraged, i.e. record of a small video of the car in the simulator and describe what each component is set to.
+### Describe the effect each of the P, I, D components had in your implementation.
+In this implementation the PID controller is used to directly control only the steering angle. The speed (throttle) is calibrated based the steering angle. The P, I, and D components have each a function to control steering. On top of the "cross tracking error" (CTE), t
+* The `P` (proportional) component control the short run steering variation. If this value is high, the vehicle tends to oscillate around the trajectory, causing an unconformable ride. On the other side, if this value is too low, the vehicle is not able to turn enough around corners, causing the vehicle to go off track.
+* The `D` (derivative or differential) component is a steering counterweight. If this value is too high then vehicle tend to turn too slowly causing issues around corners, while, if this value is too low, then there is no adjustment to the steering rate so the vehicle may oscillate too much.
+* With the `I` (integral) component we keep track of all previous CTEs, thus it is a long range steering component. When this component is too high, the vehicle has too much memory and tend to change direction abruptly. 
 
 ### Describe how the final hyperparameters were chosen
-Student discusses how they chose the final hyperparameters (P, I, D coefficients). This could be have been done through manual tuning, twiddle, SGD, or something else, or a combination!
+I choose the final hyperparameters manually by experimenting in the simulation. For example, when I observed the vehicle oscillate too much then I first decrease `P` or increase `D`. The parameter value for the integral component `I` is set close to 0.
 
-
-
-## Criteria
-Compilation
-* Your code should compile. Code must compile without errors with cmake and make. Given that we've made CMakeLists.txt as general as possible, it's recommend that you do not change it unless you can guarantee that your changes will still compile on any platform.
-
-
-Implementation
-* The PID procedure follows what was taught in the lessons. It's encouraged to be creative, particularly around hyperparameter tuning/optimization. However, the base algorithm should follow what's presented in the lessons.
-
-
-Simulation
-* The vehicle must successfully drive a lap around the track. No tire may leave the drivable portion of the track surface. The car may not pop up onto ledges or roll over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle).
-
-
-
-Complete the TODO in main.cpp, PID.cpp and add any helper files you need using the text editor in the workspace.
+I experiment different value for throttle as well. Fix and low value for throttle worked fine the resulting speed was too low. In my implementation I made the throttle value dependent on steering value, such that when the steering value is high, the throttle value is low. On the contrary, when there is no steering, the throttle value increases.
 
 
 ---

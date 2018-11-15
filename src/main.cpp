@@ -79,7 +79,7 @@ int main()
           // Throttle is a function of steering (abs) value
           double abs_steer_value = std::abs(steer_value);
           throttle = -0.3 + 1.0*(1 - abs_steer_value);
-          
+          //throttle = 0.3
           
           // DEBUG
           std::cout << "CTE: " << cte << " Steering Value: " << steer_value << " speed: " << speed << std::endl;

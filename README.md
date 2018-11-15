@@ -1,5 +1,5 @@
-[image1]: ./img/straight.png "im1"
-[image2]: ./img/curve.png "im2"
+[image1]: ./img/straight.PNG "im1"
+[image2]: ./img/curve.PNG "im2"
 
 
 # Demo of PID (Proportional Integral Derivative) Controller for Vehicle Steering
@@ -59,7 +59,7 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 ## Reflection
 
 ### Describe the effect each of the P, I, D components had in your implementation.
-In this implementation the PID controller is used to directly control only the steering angle. The speed (throttle) is calibrated based the steering angle. The P, I, and D components have each a function to control steering. On top of the "cross tracking error" (CTE), t
+In this implementation the PID controller is used to directly control only the steering angle. The speed (throttle) is calibrated based the steering angle. The P, I, and D components have each a function to control steering angle based on the "cross tracking error" (CTE).
 * The `P` (proportional) component control the short run steering variation. If this value is high, the vehicle tends to oscillate around the trajectory, causing an unconformable ride. On the other side, if this value is too low, the vehicle is not able to turn enough around corners, causing the vehicle to go off track.
 * The `D` (derivative or differential) component is a steering counterweight. If this value is too high then vehicle tend to turn too slowly causing issues around corners, while, if this value is too low, then there is no adjustment to the steering rate so the vehicle may oscillate too much.
 * With the `I` (integral) component we keep track of all previous CTEs, thus it is a long range steering component. When this component is too high, the vehicle has too much memory and tend to change direction abruptly. 
